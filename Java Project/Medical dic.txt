@@ -1,0 +1,128 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Scanner;
+
+class Term {
+    String name;
+    String definition;
+
+    Term(String name, String definition) {
+        this.name = name;
+        this.definition = definition;
+    }
+}
+
+public class Dictionary {
+    private static final int TERM = 1000;
+    private static ArrayList<Term> terms = new ArrayList<>(TERM);
+
+    public static void addTerm() {
+        if (terms.size() >= TERM) {
+            System.out.println("Error: dictionary is full");
+            return;
+        }
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the term name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter the definition: ");
+        String definition = scanner.nextLine();
+        terms.add(new Term(name, definition));
+    }
+
+    public static void displayTerms() {
+        if (terms.isEmpty()) {
+            System.out.println("The dictionary is empty");
+            return;
+        }
+
+        // Sort terms in alphabetical order
+        Collections.sort(terms, Comparator.comparing(term -> term.name));
+
+        System.out.println("Terms in alphabetical order:");
+        for (Term term : terms) {
+            System.out.println(term.name + ": " + term.definition);
+        }
+    }
+
+    public static void updateDefinition() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the term name to update: ");
+        String name = scanner.nextLine();
+        for (Term term : terms) {
+            if (term.name.equals(name)) {
+                System.out.print("Enter the new definition: ");
+                term.definition = scanner.nextLine();
+                System.out.println("Definition updated");
+                return;
+            }
+        }
+        System.out.println("Term not found");
+    }
+
+    public static void searchTerm() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the term name to search: ");
+        String name = scanner.nextLine();
+        for (Term term : terms) {
+            if (term.name.equals(name)) {
+                System.out.println(term.name + " :-> " + term.definition);
+                return;
+            }
+        }
+        System.out.println("Term not found");
+    }
+
+    public static void deleteTerm() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the term name to delete: ");
+        String name = scanner.nextLine();
+        for (int i = 0; i < terms.size(); i++) {
+            if (terms.get(i).name.equals(name)) {
+                terms.remove(i);
+                System.out.println("Term deleted");
+                return;
+            }
+        }
+        System.out.println("Term not found");
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+        do {
+            System.out.println("\nMedical terminology dictionary");
+            System.out.println("------------------------------");
+            System.out.println("1. Add term");
+            System.out.println("2. Display terms in alphabetical order");
+            System.out.println("3. Update definition");
+            System.out.println("4. Search term");
+            System.out.println("5. Delete term");
+            System.out.println("6. Quit");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+            scanner.nextLine();  // Consume newline
+
+            switch (choice) {
+                case 1:
+                    addTerm();
+                    break;
+                case 2:
+                    displayTerms();
+                    break;
+                case 3:
+                    updateDefinition();
+                    break;
+                case 4:
+                    searchTerm();
+                    break;
+                case 5:
+                    deleteTerm();
+                    break;
+            }
+        } while (choice != 6);
+
+        System.out.println("Thank you for coming");
+        System.out.println("Always enter the correct number");
+    }
+}
